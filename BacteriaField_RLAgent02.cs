@@ -16,6 +16,7 @@ public class BacteriaAI : MonoBehaviour
     public float moveDir = 5;
     private float yPos;
     public bool replicating;
+    public Cell c;
 
     [Header("Mutations")]
     public bool cough;
@@ -45,8 +46,16 @@ public class BacteriaAI : MonoBehaviour
     
     void OnTriggerEnter(Collider col){
         if(col.gameObject.tag == "HostCell")
-        {}
+        {
+            replicating = true;
+            c = col.gameObject;
+        }
     
+    }
+    
+    public void clone()
+    {
+       
     }
     
     
