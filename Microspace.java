@@ -5,7 +5,7 @@ using UnityEngine;
 public class Microspace : MonoBehaviour
 {
     [Header("Cells/Field")]
-    public int numCells = 20;
+    public List<HostCell> allCells = new List<HostCell>();
     public int cellReplicationRate = 20;
     public bool infected = false;
     public List<int> BacteriaID = new List<int>();
@@ -20,5 +20,25 @@ public class Microspace : MonoBehaviour
     public float DCC = 30; //seconds it takes for a dentritic cell to find and collide with a t-cell
     public float HTCBT = 1.4f; //increases WBT by 1.4x and -1 for WBTK
     public float BCSR = 3f; //antibodies kill 1 bacteria every __ seconds
-    private 
+    
+    
+    public void Update(){
+        repair();
+    }
+    
+    public void repair(){
+        if(infected == false && allCells.Count < 20)
+        {
+            int numRepairs = int.Parse((20 - allCells.Count) / 2);
+            for(int i = 0; i < numRepairs; i++){
+                allCells.get(i).canReplicate = true;
+            }
+        }
+        else if(infected == true || allCells.Count >= 20)
+        {
+            for(int i = 0; i < allCells.Count; i++){
+                allCells.get(i).canReplicate = false;
+            }
+        }
+    }
 }
