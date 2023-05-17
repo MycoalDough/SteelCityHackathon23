@@ -1,6 +1,0 @@
-using UnityEngine;
-using System.IO;
-
-public Prey_RLAgent01 : MonoBehavior{
-  
-}
