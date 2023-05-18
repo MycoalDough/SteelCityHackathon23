@@ -11,6 +11,7 @@ public class Microspace : MonoBehaviour
     public int numCells;
     public bool infected = false;
     public List<int> BacteriaID = new List<int>();
+    public Prey_RLAgent01 pr;
 
     [Header("Immune Defense")]
     public float complementSystem = 10;
@@ -25,6 +26,7 @@ public class Microspace : MonoBehaviour
 
     public void Update()
     {
+        thymusSpawnRate = 10 - pr.energy; //this makes 0 sense
         repair();
         cs();
     }
