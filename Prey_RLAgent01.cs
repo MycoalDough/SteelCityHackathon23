@@ -328,13 +328,20 @@ public class Prey_AI : MonoBehaviour
             }
 
         }
-        else if (thirst < hunger && obj.tag == "Water")
+        else if (obj.tag == "Water")
         {
-            Debug.Log("Thirst");
-            action = true;
-            desiredPos = obj.transform.position;
-            actionName = "Drink";
-
+        if(action && thirst < hunger)
+        {
+                Debug.Log("Thirst");
+                action = true;
+                desiredPos = obj.transform.position;
+                actionName = "Drink";
+            } else if(!action) {
+                Debug.Log("Thirst");
+                action = true;
+                desiredPos = obj.transform.position;
+                actionName = "Drink";
+            }
         }
         else if (reproductionNeed > hunger && reproductionNeed > thirst && obj.tag == preyTag && canReproduce)
         {
