@@ -15,7 +15,6 @@ public class Microspace : MonoBehaviour
     [Header("Immune Defense")]
     public float complementSystem = 10;
     public float thymusSpawnRate = 10; //is affected by age and energy
-    public int WBTK = 5; //white blood cells to kill 1 bacteria
     public int WBT = 10; // WBTK / 5 = amount to kill (rounds down) every WBT seconds
     public int WBSR = 10; //seconds after a white blood cell implodes
     public float DCT = 30; //seconds it takes for a dendritic cell to collect samples
@@ -27,6 +26,20 @@ public class Microspace : MonoBehaviour
     public void Update()
     {
         repair();
+        cs();
+    }
+    
+    public void cs(){
+        if(infected){
+            complementSystem += Time.deltaTime;
+            if(complementSystem > 10){
+                int rng = Random.Range(0, allBacteria.Count);
+                GameObject toDestroy = allBacteria[rng].gameObject;
+                allBacteria.removeAt(rng);
+                Destory(toDestroy);
+                complementSystem = 0;
+            }
+        }
     }
 
     public void repair()
