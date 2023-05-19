@@ -15,12 +15,14 @@ public class Microspace : MonoBehaviour
     public int cellReplicationRate = 20;
     public int numCells;
     public bool infected = false;
+    public bool hasFever = false;
     
     private float cough = 20f;
     private float coughDelay = 0f;
     public List<int> BacteriaID = new List<int>();
     public List<int> Blacklisted = new List<int>();
     public Prey_AI pr;
+    public bool hasInsomnia;
    
     [Header("Immune Defense")]
     public float complementSystem = 10;
@@ -42,7 +44,19 @@ public class Microspace : MonoBehaviour
 
     public void Update()
     {
-        float a = (pr.hunger > 20) ? 10 : 17.5f;
+        checkInsomnia();
+        checkIfCough();
+        float a = 0;
+        if(pr.hunger > 20)
+        {
+            a = 5;
+        }else{
+            a = 13;
+        }
+        
+        if(hasInsomnia){
+            a = 15;
+        }
         thymusSpawnRate = a; //this makes 0 sense
         repair();
         cs();
@@ -117,11 +131,23 @@ public class Microspace : MonoBehaviour
             coughDelay = 0;
             
             int check = -1;
+            int checkFatigue = -1
             for(int i = 0; i < allBacteria.Count; i++){
                 if(allBacteria[i].cough){
                     check++;
                }
+                if(allBacteria[i].fatigue){
+                    checkFatigue++;
+                }
             }
+            
+            if(checkFatigue != -1)
+            {
+                hasFever = true;
+            }
+            else{
+                hasFever = false;
+                }
             
             if(check != -1){
                 for(int j = 0; j < check; j++){
@@ -141,6 +167,17 @@ public class Microspace : MonoBehaviour
                 }
             }
         }
+    }
+    
+    public void checkInsomnia(){            
+            int check = -1;
+            for(int i = 0; i < allBacteria.Count; i++){
+                if(allBacteria[i].fatigue){
+                    check++;
+               }
+            }
+            
+            hasInsomnia = (check == -1) ? false : true;
     }
 
     public IEnumerator finalRush()
