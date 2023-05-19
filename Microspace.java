@@ -7,16 +7,21 @@ public class Microspace : MonoBehaviour
     [Header("Cells/Field")]
     public List<HostCell> allCells = new List<HostCell>();
     public List<BacteriaField_RLAgent02> allBacteria = new List<BacteriaField_RLAgent02>();
+    
+    public GameObject realWorldBacteria;
 
     public GameObject whiteBloodCell;
     private bool canRush = false;
     public int cellReplicationRate = 20;
     public int numCells;
     public bool infected = false;
+    
+    private float cough = 20f;
+    private float coughDelay = 0f;
     public List<int> BacteriaID = new List<int>();
     public List<int> Blacklisted = new List<int>();
     public Prey_AI pr;
-
+   
     [Header("Immune Defense")]
     public float complementSystem = 10;
     public GameObject microspace;
@@ -96,9 +101,46 @@ public class Microspace : MonoBehaviour
 
             bcsrr = 0;
         }
+        
+        
+
 
         
 
+    }
+    
+    public void checkIfCough()
+    {
+        coughDelay += Time.deltaTime;
+        
+        if(coughDelay > cough){
+            coughDelay = 0;
+            
+            int check = -1;
+            for(int i = 0; i < allBacteria.Count; i++){
+                if(allBacteria[i].cough){
+                    check++;
+               }
+            }
+            
+            if(check != -1){
+                for(int j = 0; j < check; j++){
+                    int RNG = Random.Range(0, allBacteria.Count);
+                    
+                    BacteriaAI b = Instantiate(realWorldBacteria, transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity).getComponent<BacteriaAI>();
+                    b.reproductionRate = allBacteria[RNG].reproductionRate;
+                    b.ID = allBacteria[RNG].ID;
+                    b.healthOutside = allBacteria[RNG].healthOutside;
+                    b.speed = allBacteria[RNG].speed;
+                    b.moveDir = allBacteria[RNG].moveDir;
+
+                    b.cough = allBacteria[RNG].cough;
+                    b.TOF = allBacteria[RNG].TOF;
+                    b.fatigue = allBacteria[RNG].fatigue;
+                    b.SL = allBacteria[RNG].SL;
+                }
+            }
+        }
     }
 
     public IEnumerator finalRush()
