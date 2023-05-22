@@ -41,4 +41,23 @@ public class BacteriaAI : MonoBehaviour
         transform.LookAt(desiredPos);
         transform.eulerAngles = new Vector3(90f, transform.rotation.y, transform.rotation.z);
     }
+    
+    public void OnCollisionEnter(Collider col)
+    {
+        if(col.gameObject.getComponent<Microspace>()){
+            Microspace m = col.gameObject.getComponent<Microspace>(); 
+            BacteriaField_RLAgent02 b = Instantiate(m.innerBacteria, m.spawnPoint, Quatnerion.identity, m.microspace).getComponent<BacteriaField_RLAgent_02>();
+                    b.ID = ID;
+                    b.healthOutside =healthOutside;
+                    b.speed = speed;
+                    b.moveDir = moveDir;
+
+                    b.cough = cough;
+                    b.TOF = TOF;
+                    b.fatigue = fatigue;
+                    b.SL = SL;
+                    b.ccpd = ccpd;
+                }
+        }
+    }
 }
